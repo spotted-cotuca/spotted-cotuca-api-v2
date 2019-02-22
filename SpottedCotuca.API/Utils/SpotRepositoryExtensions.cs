@@ -1,11 +1,9 @@
 ﻿using Google.Cloud.Datastore.V1;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using SpottedCotuca.API.Models;
 
-namespace SpottedCotuca.API.Repositories
+namespace SpottedCotuca.API.Utils
 {
     public static class SpotsRepositoryExtensions
     {
@@ -24,7 +22,7 @@ namespace SpottedCotuca.API.Repositories
             ["ttPostId"] = spot.TwitterId
         };
 
-        public static Models.Spot ToSpot(this Entity entity) => new Spot()
+        public static Spot ToSpot(this Entity entity) => new Spot()
         {
             Id = entity.Key.Path.First().Id,
             Message = (string)entity["message"],
