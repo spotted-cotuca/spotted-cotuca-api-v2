@@ -1,15 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace SpottedCotuca.API.Models
 {
     public class User
     {
-        public String Username { get; private set; }
-        public String Email { get; private set; }
-        public String Password { get; private set; }
-        public String Role { get; private set; }
+        public string Username { get; private set; }
+        public string Password { get; private set; }
+        public string Salt { get; private set; }
+        public string Role { get; private set; }
+
+        public class UserSignupRequest
+        {
+            public string Username { get; private set; }
+            public string Password { get; private set; }
+
+            public User ToUser()
+            {
+                byte[] passwordBytes = Encoding.UTF8.GetBytes(this.Password);
+                byte[] saltBytes = GenerateSaltBytes(); 
+
+                byte[] hashedPassword = HashPassword(passwordBytes, saltBytes);
+                return new User()
+                {
+                    Username = this.Username,
+                    Password = BitConverter.ToString(hashedPassword).Replace("-", String.Empty),
+                    Salt = BitConverter.ToString(saltBytes).Replace("-", String.Empty),
+                    Role = "moderator"
+                };
+            }
+
+            private byte[] GenerateSaltBytes()
+            {
+                byte[] salt = new byte[64];
+                new Random().NextBytes(salt);
+
+                return salt;
+            }
+
+            private byte[] HashPassword(byte[] password, byte[] salt)
+            {
+                HashAlgorithm sha256 = SHA256.Create();
+                HashAlgorithm sha512 = SHA512.Create();
+
+                byte[] passwordHash = sha256.ComputeHash(password);
+                byte[] saltHash = sha256.ComputeHash(salt);
+                return sha512.ComputeHash(passwordHash.Concat(saltHash).ToArray());
+            }
+        }
     }
 }
