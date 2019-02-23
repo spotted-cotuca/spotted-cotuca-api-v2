@@ -1,7 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using SpottedCotuca.API.Models;
+using SpottedCotuca.API.Requests;
 using SpottedCotuca.API.Services;
 using SpottedCotuca.API.Utils;
 
@@ -18,7 +17,7 @@ namespace SpottedCotuca.API.Controllers
             _service = service;
         }
 
-        [HttpGet("{:id}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> Get(long id)
         {
             var spot = await _service.ReadSpot(id);
@@ -26,28 +25,28 @@ namespace SpottedCotuca.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetPaging(string status, [FromQuery(Name = "offset")] int offset = 0, [FromQuery(Name = "limit")] int limit = 50)
+        public async Task<IActionResult> GetPaging([FromQuery] GetPagingSpotsRequest request)
         {
-            var pagingSpots = await _service.ReadPagingSpots(status.ToStatus(), offset, limit);
+            var pagingSpots = await _service.ReadPagingSpots(request.Status.ToStatus(), request.Offset, request.Limit);
             return Ok(pagingSpots);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(string message)
+        public async Task<IActionResult> Post(PostSpotRequest request)
         {
-            await _service.CreateSpot(message);
+            await _service.CreateSpot(request.Message);
             return Ok();
         }
 
-        [HttpPut("{:id}")]
-        public async Task<IActionResult> Put(long id, Status status)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, PutSpotRequest request)
         {
-            await _service.UpdateSpot(id, status);
+            await _service.UpdateSpot(id, request.Status.ToStatus());
             return Ok();
         }
 
-        [HttpDelete("{:id}")]
-        public async Task<IActionResult> Delete(long id)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
             await _service.DeleteSpot(id);
             return Ok();
