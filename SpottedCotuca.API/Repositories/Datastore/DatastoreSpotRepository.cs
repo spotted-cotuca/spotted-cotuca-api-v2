@@ -45,12 +45,12 @@ namespace SpottedCotuca.API.Repositories
 
         public Spot Read(long id)
         {
-            return _db.Lookup(id.ToKey())?.ToSpot();
+            return _db.Lookup(id.ToSpotKey())?.ToSpot();
         }
 
         public async Task<Spot> ReadAsync(long id)
         {
-            var result = await _db.LookupAsync(id.ToKey());
+            var result = await _db.LookupAsync(id.ToSpotKey());
             return result.ToSpot();
         }
 

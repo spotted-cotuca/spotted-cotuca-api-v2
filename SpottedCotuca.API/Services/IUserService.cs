@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace SpottedCotuca.API.Services
 {
-    interface IUserService
+    public interface IUserService
     {
-        Task<User> ReadUser(String username);
+        Task<User> ReadUser(string username);
         Task Signup(User user);
         Task UpdateUser(User user);
-        Task DeleteUser(String username);
+        Task DeleteUser(string username);
     }
 }

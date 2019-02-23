@@ -8,9 +8,9 @@ namespace SpottedCotuca.API.Repositories
 {
     interface IUserRepository
     {
-        Task<User> Read(String username);
+        Task<User> Read(string username);
         Task Create(User user);
-        Task Update(User user);
-        Task Delete(String username);
+        //Task Update(User user);
+        Task Delete(string username);
     }
 }
