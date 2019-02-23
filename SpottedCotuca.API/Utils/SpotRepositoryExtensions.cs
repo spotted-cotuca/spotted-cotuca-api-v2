@@ -7,14 +7,9 @@ namespace SpottedCotuca.API.Utils
 {
     public static class SpotsRepositoryExtensions
     {
-        public static Key ToKey(this long id) =>
-            new Key().WithElement("Spot", id);
-
-        public static long ToId(this Key key) => key.Path.First().Id;
-
         public static Entity ToEntity(this Spot spot) => new Entity()
         {
-            Key = spot.Id.ToKey(),
+            Key = spot.Id.ToSpotKey(),
             ["message"] = spot.Message,
             ["status"] = (int)spot.Status,
             ["date"] = spot.PostDate.ToUniversalTime(),
