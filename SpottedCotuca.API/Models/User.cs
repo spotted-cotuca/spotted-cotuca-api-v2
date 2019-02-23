@@ -9,15 +9,15 @@ namespace SpottedCotuca.API.Models
 {
     public class User
     {
-        public string Username { get; private set; }
-        public string Password { get; private set; }
-        public string Salt { get; private set; }
-        public string Role { get; private set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public string Salt { get; set; }
+        public string Role { get; set; }
 
         public class UserSignupRequest
         {
-            public string Username { get; private set; }
-            public string Password { get; private set; }
+            public string Username { get; set; }
+            public string Password { get; set; }
 
             public User ToUser()
             {
