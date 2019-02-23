@@ -16,13 +16,13 @@ namespace SpottedCotuca.API.Services
 
         public Task<Spot> ReadSpot(long id)
         {
-            var spot = _repository.ReadAsync(id);
+            var spot = _repository.Read(id);
             return spot;
         }
 
         public Task<PagingSpots> ReadPagingSpots(Status status, int offset, int limit)
         {
-            var pagingSpots = _repository.ReadAsync(status, offset, limit);
+            var pagingSpots = _repository.Read(status, offset, limit);
             return pagingSpots;
         }
 
@@ -35,22 +35,22 @@ namespace SpottedCotuca.API.Services
                 PostDate = DateTime.UtcNow
             };
 
-            await _repository.CreateAsync(spot);
+            await _repository.Create(spot);
         }
 
         public async Task UpdateSpot(long id, Status status)
         {
-            var spot = await _repository.ReadAsync(id);
+            var spot = await _repository.Read(id);
             spot.Status = status;
 
             // TODO: Facebook and Twitter interactions with UnitOfWork
 
-            await _repository.UpdateAsync(spot);
+            await _repository.Update(spot);
         }
 
         public async Task DeleteSpot(long id)
         {
-            await _repository.DeleteAsync(id);
+            await _repository.Delete(id);
         }
     }
 }
