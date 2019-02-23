@@ -6,12 +6,12 @@ using SpottedCotuca.API.Utils;
 
 namespace SpottedCotuca.API.Repositories
 {
-    public class SpotRepository : ISpotRepository
+    public class DatastoreSpotRepository : ISpotRepository
     {
         private readonly string _projectId;
         private readonly DatastoreDb _db;
 
-        public SpotRepository(string projectId)
+        public DatastoreSpotRepository(string projectId)
         {
             _projectId = projectId;
             _db = DatastoreDb.Create(_projectId);
