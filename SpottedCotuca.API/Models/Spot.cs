@@ -17,8 +17,8 @@ namespace SpottedCotuca.API.Models
 
     public enum Status
     {
-        REJECTED = -1,
-        PENDING = 0,
-        APPROVED = 1,
+        Rejected = -1,
+        Pending = 0,
+        Approved = 1,
     }
 }

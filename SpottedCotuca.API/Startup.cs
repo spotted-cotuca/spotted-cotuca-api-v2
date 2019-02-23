@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using SpottedCotuca.API.Middlewares;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace SpottedCotuca
@@ -52,6 +53,7 @@ namespace SpottedCotuca
                 app.UseHsts();
             }
 
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
             app.UseHttpsRedirection();
             app.UseMvc();
 

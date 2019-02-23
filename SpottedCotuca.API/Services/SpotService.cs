@@ -31,7 +31,7 @@ namespace SpottedCotuca.API.Services
             var spot = new Spot
             {
                 Message = message,
-                Status = Status.PENDING,
+                Status = Status.Pending,
                 PostDate = DateTime.UtcNow
             };
 

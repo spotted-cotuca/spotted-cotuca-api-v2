@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SpottedCotuca.API.Models;
 using SpottedCotuca.API.Services;
+using SpottedCotuca.API.Utils;
 
 namespace SpottedCotuca.API.Controllers
 {
@@ -24,9 +26,9 @@ namespace SpottedCotuca.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetPaging(Status status, [FromQuery(Name = "offset")] int offset = 0, [FromQuery(Name = "limit")] int limit = 50)
+        public async Task<IActionResult> GetPaging(string status, [FromQuery(Name = "offset")] int offset = 0, [FromQuery(Name = "limit")] int limit = 50)
         {
-            var pagingSpots = await _service.ReadPagingSpots(status, offset, limit);
+            var pagingSpots = await _service.ReadPagingSpots(status.ToStatus(), offset, limit);
             return Ok(pagingSpots);
         }
 
