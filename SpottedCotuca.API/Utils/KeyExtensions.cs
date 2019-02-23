@@ -11,6 +11,9 @@ namespace SpottedCotuca.API.Utils
         public static Key ToSpotKey(this long id) =>
             new Key().WithElement("Spot", id);
 
+        public static Key ToUserKey(this long id) =>
+            new Key().WithElement("User", id);
+
         public static long ToId(this Key key) => key.Path.First().Id;
     }
 }

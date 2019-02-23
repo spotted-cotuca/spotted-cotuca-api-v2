@@ -11,6 +11,7 @@ namespace SpottedCotuca.API.Utils
     {
         public static Entity ToEntity(this User user) => new Entity()
         {
+            Key = user.Id.ToUserKey(),
             ["username"] = user.Username,
             ["password"] = user.Password,
             ["salt"] = user.Salt,
@@ -19,6 +20,7 @@ namespace SpottedCotuca.API.Utils
 
         public static User ToUser(this Entity entity) => new User()
         {
+            Id = entity.Key.Path.First().Id,
             Username = (string) entity["username"],
             Password = (string) entity["password"],
             Salt = (string) entity["salt"],
