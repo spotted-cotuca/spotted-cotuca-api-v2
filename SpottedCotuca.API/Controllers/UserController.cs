@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SpottedCotuca.API.Models;
+using SpottedCotuca.API.Requests;
 using SpottedCotuca.API.Services;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,7 @@ namespace SpottedCotuca.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(User.UserSignupRequest signupRequest)
+        public async Task<IActionResult> Post(PostUserRequest signupRequest)
         {
             await _service.Signup(signupRequest.ToUser());
             return Ok();
