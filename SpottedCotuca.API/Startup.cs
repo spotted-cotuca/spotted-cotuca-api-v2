@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SpottedCotuca.API.Filters;
+using SpottedCotuca.Application.Filters;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace SpottedCotuca

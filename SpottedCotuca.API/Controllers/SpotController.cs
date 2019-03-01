@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using SpottedCotuca.API.Requests;
-using SpottedCotuca.API.Services;
-using SpottedCotuca.API.Utils;
+using SpottedCotuca.Application.Contracts.Requests;
+using SpottedCotuca.Application.Services;
+using SpottedCotuca.Application.Utils;
 
 namespace SpottedCotuca.API.Controllers
 {

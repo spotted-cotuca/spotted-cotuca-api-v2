@@ -23,4 +23,8 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SpottedCotuca.Application\SpottedCotuca.Application.csproj" />
+  </ItemGroup>
+
 </Project>
