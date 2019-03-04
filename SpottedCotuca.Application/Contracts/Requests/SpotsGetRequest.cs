@@ -1,36 +1,37 @@
 ﻿using FluentValidation;
 using SpottedCotuca.Application.Entities.Models;
+using SpottedCotuca.Application.Services;
 
 namespace SpottedCotuca.Application.Contracts.Requests
 {
-    public class GetPagingSpotsRequest
+    public class SpotsGetRequest
     {
         public string Status { get; set; }
         public int Offset { get; set; }
         public int Limit { get; set; }
     }
 
-    public class GetPagingSpotsRequestValidator : AbstractValidator<GetPagingSpotsRequest>
+    public class SpotsGetRequestValidator : AbstractValidator<SpotsGetRequest>
     {
-        public GetPagingSpotsRequestValidator()
+        public SpotsGetRequestValidator()
         {
             RuleFor(request => request.Status)
                 .NotNull()
-                .WithMessage("Status cannot be empty.")
+                .WithCustomError(Errors.SpotStatusIsEmpty)
                 .NotEmpty()
-                .WithMessage("Status cannot be empty.")
+                .WithCustomError(Errors.SpotStatusIsEmpty)
                 .Must(BeAValidStatus)
-                .WithMessage("Status cannot be different from \"approved\",\"rejected\" or \"pending\".");
+                .WithCustomError(Errors.SpotStatusIsNotApprovedRejectedOrPending);
 
             RuleFor(request => request.Offset)
                 .GreaterThan(0)
-                .WithMessage("Offset cannot be lesser than 0.");
+                .WithCustomError(Errors.SpotOffsetIsLesserThan0);
 
             RuleFor(request => request.Limit)
                 .GreaterThan(1)
-                .WithMessage("Limit cannot be lesser than 1.")
+                .WithCustomError(Errors.SpotLimitIsLesserThan1)
                 .LessThan(50)
-                .WithMessage("Limit cannot be greater than 50");
+                .WithCustomError(Errors.SpotLimitIsGreaterThanMaxLimit);
         }
 
         private bool BeAValidStatus(string status)

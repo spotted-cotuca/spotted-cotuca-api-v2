@@ -2,7 +2,7 @@
 
 namespace SpottedCotuca.Application.Contracts.Responses
 {
-    public class GetSpotResponse
+    public class SpotGetResponse
     {
         public long Id { get; set; }
         public string Message { get; set; }

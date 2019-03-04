@@ -4,7 +4,7 @@ using SpottedCotuca.Application.Entities.Models;
 
 namespace SpottedCotuca.Application.Services
 {
-    public class UserService : IUserService
+    public class UserService
     {
         public Task DeleteUser(string username)
         {

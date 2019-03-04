@@ -2,9 +2,9 @@
 
 namespace SpottedCotuca.Application.Contracts.Responses
 {
-    public class GetSpotsResponse
+    public class SpotsGetResponse
     {
-        public List<GetSpotResponse> Spots { get; set; }
+        public List<SpotGetResponse> Spots { get; set; }
         public PagingResponse Paging { get; set; }
     }
 

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace SpottedCotuca.Application.Contracts.Requests
 {
-    public class PostUserRequest
+    public class UserPostRequest
     {
         public string Username { get; set; }
         public string Password { get; set; }
@@ -46,9 +46,9 @@ namespace SpottedCotuca.Application.Contracts.Requests
         }
     }
 
-    public class PostUserRequestValidator : AbstractValidator<PostUserRequest>
+    public class UserPostRequestValidator : AbstractValidator<UserPostRequest>
     {
-        public PostUserRequestValidator()
+        public UserPostRequestValidator()
         {
             RuleFor(request => request.Username)
                 .NotEmpty()

@@ -25,7 +25,7 @@ namespace SpottedCotuca.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(PostUserRequest signupRequest)
+        public async Task<IActionResult> Post(UserPostRequest signupRequest)
         {
             await _service.Signup(signupRequest.ToUser());
             return Ok();

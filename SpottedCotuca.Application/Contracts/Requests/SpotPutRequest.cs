@@ -1,22 +1,23 @@
 ﻿using FluentValidation;
 using SpottedCotuca.Application.Entities.Models;
+using SpottedCotuca.Application.Services;
 
 namespace SpottedCotuca.Application.Contracts.Requests
 {
-    public class PutSpotRequest
+    public class SpotPutRequest
     {
         public string Status { get; set; }
     }
 
-    public class PutSpotRequestValidator : AbstractValidator<PutSpotRequest>
+    public class SpotPutRequestValidator : AbstractValidator<SpotPutRequest>
     {
-        public PutSpotRequestValidator()
+        public SpotPutRequestValidator()
         {
             RuleFor(request => request.Status)
                 .NotEmpty()
-                .WithMessage("Status cannot be empty.")
+                .WithCustomError(Errors.SpotStatusIsEmpty)
                 .Must(BeAValidStatus)
-                .WithMessage("Status cannot be different from \"approved\" or \"rejected\".");
+                .WithCustomError(Errors.SpotStatusIsNotApprovedOrRejected);
         }
 
         private bool BeAValidStatus(string status)

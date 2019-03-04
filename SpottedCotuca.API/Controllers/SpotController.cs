@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using SpottedCotuca.API.Utils;
 using SpottedCotuca.Application.Contracts.Requests;
 using SpottedCotuca.Application.Services;
 using SpottedCotuca.Application.Utils;
@@ -10,9 +11,9 @@ namespace SpottedCotuca.API.Controllers
     [ApiController]
     public class SpotController : ControllerBase
     {
-        private readonly ISpotService _service;
+        private readonly SpotService _service;
 
-        public SpotController(ISpotService service)
+        public SpotController(SpotService service)
         {
             _service = service;
         }
@@ -20,36 +21,41 @@ namespace SpottedCotuca.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(long id)
         {
-            var spot = await _service.ReadSpot(id);
-            return Ok(spot);
+            var result = await _service.ReadSpot(id);
+
+            return HttpHelper.Convert(result);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetPaging([FromQuery] GetPagingSpotsRequest request)
+        public async Task<IActionResult> GetPaging([FromQuery] SpotsGetRequest request)
         {
-            var pagingSpots = await _service.ReadPagingSpots(request.Status.ToStatus(), request.Offset, request.Limit);
-            return Ok(pagingSpots);
+            var result = await _service.ReadSpots(request);
+
+            return HttpHelper.Convert(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(PostSpotRequest request)
+        public async Task<IActionResult> Post(SpotPostRequest request)
         {
-            await _service.CreateSpot(request.Message);
-            return Ok();
+            var result = await _service.CreateSpot(request);
+
+            return HttpHelper.Convert(result);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, PutSpotRequest request)
+        public async Task<IActionResult> Put(int id, SpotPutRequest request)
         {
-            await _service.UpdateSpot(id, request.Status.ToStatus());
-            return Ok();
+            var result = await _service.UpdateSpot(id, request);
+
+            return HttpHelper.Convert(result);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await _service.DeleteSpot(id);
-            return Ok();
+            var result = await _service.DeleteSpot(id);
+
+            return HttpHelper.Convert(result);
         }
     }
 }
