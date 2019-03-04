@@ -10,9 +10,9 @@ namespace SpottedCotuca.API.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserService _service;
+        private readonly UserService _service;
 
-        public UserController(IUserService service)
+        public UserController(UserService service)
         {
             _service = service;
         }
