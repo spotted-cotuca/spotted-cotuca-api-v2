@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.28307.271
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpottedCotuca.API", "SpottedCotuca.API\SpottedCotuca.API.csproj", "{31017F2F-17CA-4544-9BC6-06968EFAA5A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpottedCotuca.Application", "SpottedCotuca.Application\SpottedCotuca.Application.csproj", "{56C1647D-CDE5-4D0C-B00B-EB0B5DF8CB9A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpottedCotuca.Application", "SpottedCotuca.Application\SpottedCotuca.Application.csproj", "{56C1647D-CDE5-4D0C-B00B-EB0B5DF8CB9A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

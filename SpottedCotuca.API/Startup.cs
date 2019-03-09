@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SpottedCotuca.Aplication.Repositories;
+using SpottedCotuca.Aplication.Repositories.Datastore;
+using SpottedCotuca.Application.Services;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace SpottedCotuca
@@ -33,6 +36,9 @@ namespace SpottedCotuca
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
+
+            services.AddTransient<SpotService>();
+            services.AddTransient<ISpotRepository, DatastoreSpotRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

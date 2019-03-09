@@ -26,17 +26,33 @@ namespace SpottedCotuca.Aplication.Repositories.Datastore
             return new PagingSpots(results.Entities.Select(entity => entity.ToSpot()).ToList(), offset, limit);
         }
 
-        public async Task Create(Spot spot)
+        public async Task<Spot> Create(Spot spot)
         {
-            var entity = spot.ToEntity();
-            entity.Key = DB.CreateKeyFactory("Spot").CreateIncompleteKey();
-            var keys = await DB.InsertAsync(new[] { entity });
-            spot.Id = keys.First().Path.First().Id;
+            CommitResponse resp;
+
+            using (DatastoreTransaction transaction = await DB.BeginTransactionAsync())
+            {
+                var entity = spot.ToEntity();
+                transaction.Insert(entity);
+                resp = await transaction.CommitAsync();
+                spot.Id = entity.Key.ToId();
+            }
+
+            return spot;
         }
 
-        public async Task Update(Spot spot)
+        public async Task<Spot> Update(Spot spot)
         {
-            await DB.UpdateAsync(spot.ToEntity());
+            CommitResponse resp;
+
+            using (DatastoreTransaction transaction = await DB.BeginTransactionAsync())
+            {
+                var entity = spot.ToEntity();
+                transaction.Update(entity);
+                resp = await transaction.CommitAsync();
+            }
+
+            return spot;
         }
 
         public async Task Delete(long id)

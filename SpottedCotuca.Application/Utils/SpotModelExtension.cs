@@ -5,7 +5,7 @@ namespace SpottedCotuca.Application.Utils
 {
     public static class SpotModelExtension
     {
-        public static Status ToStatus(this string status)
+        public static Status ToStatusEnum(this string status)
         {
             return (Status)Enum.Parse(typeof(Status), status);
         }

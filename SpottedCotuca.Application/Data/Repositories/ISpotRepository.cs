@@ -7,8 +7,8 @@ namespace SpottedCotuca.Aplication.Repositories
     {
         Task<Spot> Read(long id);
         Task<PagingSpots> Read(Status status, int offset, int limit);
-        Task Create(Spot spot);
-        Task Update(Spot spot);
+        Task<Spot> Create(Spot spot);
+        Task<Spot> Update(Spot spot);
         Task Delete(long id);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace SpottedCotuca.Application.Data.Clients
 {
@@ -6,5 +7,11 @@ namespace SpottedCotuca.Application.Data.Clients
     {
         Task<long> CreatePost(string message);
         Task<bool> DeletePost(long id);
+    }
+
+    public class FacebookClientException : Exception
+    {
+        public FacebookClientException() { }
+        public FacebookClientException(string message) : base(message) { }
     }
 }

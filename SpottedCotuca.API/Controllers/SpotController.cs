@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using SpottedCotuca.API.Utils;
 using SpottedCotuca.Application.Contracts.Requests;
 using SpottedCotuca.Application.Services;
-using SpottedCotuca.Application.Utils;
 
 namespace SpottedCotuca.API.Controllers
 {

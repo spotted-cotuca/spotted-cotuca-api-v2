@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
@@ -24,11 +26,8 @@ namespace SpottedCotuca.Application.Data.Clients
             );
         }
 
-        // TODO: Handle exceptions and return Tweet ID
         public async Task<long> PublishTweet(string status)
         {
-            throw new NotImplementedException();
-
             var data = new Dictionary<string, string> {
                 { "status", status },
                 { "trim_user", "0" }
@@ -37,13 +36,12 @@ namespace SpottedCotuca.Application.Data.Clients
             var response = await SendRequest("statuses/update.json", data);
 
             if (response.IsSuccessStatusCode)
-                // return response.Content.ToString();
+                return JsonConvert.DeserializeObject<TwitterResponse>(response.Content.ToString()).Id;
 
             throw new Exception(response.Content.ToString());
         }
 
-        // TODO: Handle exceptions
-        public async Task<bool> DestroyTweet(string id)
+        public async Task<bool> DestroyTweet(long id)
         {
             var data = new Dictionary<string, string>
             {
@@ -55,10 +53,13 @@ namespace SpottedCotuca.Application.Data.Clients
             if (response.IsSuccessStatusCode)
                 return true;
 
+            if (response.StatusCode == HttpStatusCode.NotFound)
+                return false;
+
             throw new Exception(response.Content.ToString());
         }
 
-        async Task<HttpResponseMessage> SendRequest(string url, Dictionary<string, string> data)
+        private async Task<HttpResponseMessage> SendRequest(string url, Dictionary<string, string> data)
         {
             var fullUrl = _twitterApiUrl + url;
 
@@ -80,7 +81,7 @@ namespace SpottedCotuca.Application.Data.Clients
             return await SendRequest(fullUrl, oAuthHeader, formData);
         }
 
-        string GenerateSignature(string url, Dictionary<string, string> data)
+        private string GenerateSignature(string url, Dictionary<string, string> data)
         {
             var sigString = string.Join(
                 "&",
@@ -99,8 +100,8 @@ namespace SpottedCotuca.Application.Data.Clients
 
             return Convert.ToBase64String(_sigHasher.ComputeHash(new ASCIIEncoding().GetBytes(fullSigData.ToString())));
         }
-
-        string GenerateOAuthHeader(Dictionary<string, string> data)
+        
+        private string GenerateOAuthHeader(Dictionary<string, string> data)
         {
             return "OAuth " + string.Join(
                 ", ",
@@ -111,7 +112,7 @@ namespace SpottedCotuca.Application.Data.Clients
             );
         }
 
-        async Task<HttpResponseMessage> SendRequest(string fullUrl, string oAuthHeader, FormUrlEncodedContent formData)
+        private async Task<HttpResponseMessage> SendRequest(string fullUrl, string oAuthHeader, FormUrlEncodedContent formData)
         {
             using (var http = new HttpClient())
             {
@@ -127,11 +128,12 @@ namespace SpottedCotuca.Application.Data.Clients
                 throw new Exception(response.Content.ToString());
             }
         }
+    }
 
-        public Task<bool> DestroyTweet(long id)
-        {
-            throw new NotImplementedException();
-        }
+    internal class TwitterResponse
+    {
+        [JsonProperty("id")]
+        public long Id { get; set; }
     }
 
     public class TwitterAuthCredentials
