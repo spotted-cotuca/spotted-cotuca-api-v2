@@ -52,15 +52,15 @@ namespace SpottedCotuca.API.Utils
                 return new NotFoundObjectResult(result.MetaError.Error);
             }
 
-            if (result.MetaError.StatusCode == (int)HttpStatusCode.Conflict)
+            if (result.MetaError.StatusCode == (int)HttpStatusCode.BadRequest)
             {
-                return new ObjectResult(result.MetaError.Error)
-                {
-                    StatusCode = (int)HttpStatusCode.Conflict
-                };
+                return new BadRequestObjectResult(result.MetaError.Error);
             }
 
-            return new BadRequestObjectResult(result.MetaError.Error);
+            return new ObjectResult(result.MetaError.Error)
+            {
+                StatusCode = (int)HttpStatusCode.InternalServerError
+            };
         }
     }
 }
