@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Google.Cloud.Datastore.V1;
+using SpottedCotuca.Application.Data.Repositories.Datastore;
 using SpottedCotuca.Application.Entities.Models;
 using SpottedCotuca.Application.Utils;
 
@@ -8,11 +9,18 @@ namespace SpottedCotuca.Aplication.Repositories.Datastore
 {
     public class DatastoreSpotRepository : ISpotRepository
     {
-        public DatastoreDb DB { get => DatastoreConfiguration.DB; }
+        private DatastoreDb _db;
+        private DatastoreProvider _provider;
+
+        public DatastoreSpotRepository(DatastoreProvider datastoreProvider)
+        {
+            _provider = datastoreProvider;
+            _db = _provider.Db();
+        }
 
         public async Task<Spot> Read(long id)
         {
-            var result = await DB.LookupAsync(id.ToSpotKey());
+            var result = await _db.LookupAsync(id.ToSpotKey());
             return result.ToSpot();
         }
 
@@ -21,7 +29,7 @@ namespace SpottedCotuca.Aplication.Repositories.Datastore
             var filter = new Filter();
             var query = new Query("Spot") { Filter = filter, Offset = offset, Limit = limit };
 
-            var results = await DB.RunQueryAsync(query);
+            var results = await _db.RunQueryAsync(query);
 
             return new PagingSpots(results.Entities.Select(entity => entity.ToSpot()).ToList(), offset, limit);
         }
@@ -30,7 +38,7 @@ namespace SpottedCotuca.Aplication.Repositories.Datastore
         {
             CommitResponse resp;
 
-            using (DatastoreTransaction transaction = await DB.BeginTransactionAsync())
+            using (DatastoreTransaction transaction = await _db.BeginTransactionAsync())
             {
                 var entity = spot.ToEntity();
                 transaction.Insert(entity);
@@ -45,7 +53,7 @@ namespace SpottedCotuca.Aplication.Repositories.Datastore
         {
             CommitResponse resp;
 
-            using (DatastoreTransaction transaction = await DB.BeginTransactionAsync())
+            using (DatastoreTransaction transaction = await _db.BeginTransactionAsync())
             {
                 var entity = spot.ToEntity();
                 transaction.Update(entity);
@@ -57,7 +65,7 @@ namespace SpottedCotuca.Aplication.Repositories.Datastore
 
         public async Task Delete(long id)
         {
-            await DB.DeleteAsync(id.ToSpotKey());
+            await _db.DeleteAsync(id.ToSpotKey());
         }
     }
 }
