@@ -15,7 +15,7 @@ namespace SpottedCotuca.Aplication.Repositories.Datastore
         public DatastoreSpotRepository(DatastoreProvider datastoreProvider)
         {
             _provider = datastoreProvider;
-            _db = _provider.Db();
+            _db = _provider.Db;
         }
 
         public async Task<Spot> Read(long id)

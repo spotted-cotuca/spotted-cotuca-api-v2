@@ -8,22 +8,34 @@ namespace SpottedCotuca.Application.Data.Repositories.Datastore
         private static readonly object padlock = new object();
 
         private readonly DatastoreOptions _options;
+        private DatastoreClient _client;
         private DatastoreDb _db;
 
         public DatastoreProvider(DatastoreOptions options)
         {
             _options = options;
+
+            if (string.IsNullOrEmpty(_options.Host))
+                _client = DatastoreClient.Create(new ServiceEndpoint(_options.Host, _options.Port));
         }
 
-        public DatastoreDb Db()
-        {
-            lock (padlock)
-            {
-                if (_db == null)
-                    _db = DatastoreDb.Create(_options.ProjectId, _options.NamespaceId, _options.Client);
+        public DatastoreDb Db {
+            get {
+                lock (padlock)
+                {
+                    if (_db == null)
+                    {
+                        if (_client != null)
+                            _db = DatastoreDb.Create(_options.ProjectId, _options.NamespaceId, _client);
 
-                return _db;
+                        _db = DatastoreDb.Create(_options.ProjectId, _options.NamespaceId);
+                    }
+
+                    return _db;
+                }
             }
+
+            private set { }
         }
     }
 
@@ -31,20 +43,7 @@ namespace SpottedCotuca.Application.Data.Repositories.Datastore
     {
         public string ProjectId;
         public string NamespaceId;
-        public ServiceEndpoint Endpoint;
-        public DatastoreClient Client 
-        {
-            get {
-                if (Endpoint == null)
-                    return null;
-
-                if (Client == null)
-                    Client = DatastoreClient.Create(Endpoint, null);
-
-                return Client;
-            }
-
-            private set { }
-        }
+        public string Host;
+        public int Port;
     }
 }
