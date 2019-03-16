@@ -5,9 +5,11 @@ using SpottedCotuca.Application.Tests.TestUtils.Builders;
 using System;
 using System.Collections.Generic;
 using Xunit;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace SpottedCotuca.Application.Tests.Services
 {
+    [TestClass]
     public class MapperExtensionsTests
     {
         private Spot _spot;
@@ -31,6 +33,7 @@ namespace SpottedCotuca.Application.Tests.Services
                             .Build();
         }
 
+        [TestMethod]
         [Fact(DisplayName = "Should map Spot to SpotGetResponse")]
         public void ShouldMapSpotToSpotGetResponse()
         {
@@ -44,6 +47,7 @@ namespace SpottedCotuca.Application.Tests.Services
             response.TwitterId.Should().Be(_spot.TwitterId);
         }
 
+        [TestMethod]
         [Fact(DisplayName = "Should map PagingSpots to SpotsGetResponse")]
         public void ShouldMapPagingSpotsToSpotsGetResponse()
         {
@@ -55,6 +59,7 @@ namespace SpottedCotuca.Application.Tests.Services
             response.Spots.Count.Should().Be(_pagingSpots.Spots.Count);
         }
 
+        [TestMethod]
         [Fact(DisplayName = "Should map Spot to SpotPostResponse")]
         public void ShouldMapSpotToSpotPostResponse()
         {
@@ -63,6 +68,7 @@ namespace SpottedCotuca.Application.Tests.Services
             response.Id.Should().Be(_spot.Id);
         }
 
+        [TestMethod]
         [Fact(DisplayName = "Should map Spot to SpotPutResponse")]
         public void ShouldMapSpotToSpotPutResponse()
         {
