@@ -1,15 +1,16 @@
 ﻿using Google.Cloud.Datastore.V1;
+using Grpc.Core;
 
 namespace SpottedCotuca.Application.Data.Repositories.Datastore
 {
-    public class DatastoreProvider
+    public class ProductionDatastoreProvider : DatastoreProvider
     {
         private static readonly object padlock = new object();
 
         private readonly string _projectId;
         private DatastoreDb _db;
 
-        public DatastoreProvider(string projectId)
+        public ProductionDatastoreProvider(string projectId)
         {
             _projectId = projectId;
         }
