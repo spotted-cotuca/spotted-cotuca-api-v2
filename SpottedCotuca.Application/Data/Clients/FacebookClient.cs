@@ -3,12 +3,12 @@ using System.Threading.Tasks;
 
 namespace SpottedCotuca.Application.Data.Clients
 {
-    public class FacebookPageClient : IFacebookClient
+    public class FacebookClient : IFacebookClient
     {
         private string _pageId;
         private string _accessToken;
 
-        public FacebookPageClient(string pageId, string accessToken)
+        public FacebookClient(string pageId, string accessToken)
         {
             _pageId = pageId;
             _accessToken = accessToken;
