@@ -41,7 +41,9 @@ namespace SpottedCotuca.Aplication.Repositories.Datastore
             using (DatastoreTransaction transaction = await _db.BeginTransactionAsync())
             {
                 var entity = spot.ToEntity();
+                entity.Key = _db.CreateKeyFactory("Spot").CreateIncompleteKey();
                 transaction.Insert(entity);
+
                 resp = await transaction.CommitAsync();
                 spot.Id = entity.Key.ToId();
             }
