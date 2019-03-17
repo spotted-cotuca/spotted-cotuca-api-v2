@@ -17,14 +17,20 @@ namespace SpottedCotuca.Application.Utils
             ["ttPostId"] = spot.TwitterId
         };
 
-        public static Spot ToSpot(this Entity entity) => new Spot()
+        public static Spot ToSpot(this Entity entity)
         {
-            Id = entity.Key.Path.First().Id,
-            Message = (string)entity["message"],
-            Status = (Status)(int)entity["status"],
-            PostDate = (DateTime)entity["date"],
-            FacebookId = (long)entity["fbPostId"],
-            TwitterId = (long)entity["ttPostId"]
-        };
+            if (entity == null)
+                return null;
+
+            return new Spot()
+            {
+                Id = entity.Key.Path.First().Id,
+                Message = (string)entity["message"],
+                Status = (Status)(int)entity["status"],
+                PostDate = (DateTime)entity["date"],
+                FacebookId = (long)entity["fbPostId"],
+                TwitterId = (long)entity["ttPostId"]
+            };
+        }
     }
 }
