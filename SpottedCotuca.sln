@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpottedCotuca.API", "Spotte
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpottedCotuca.Application", "SpottedCotuca.Application\SpottedCotuca.Application.csproj", "{56C1647D-CDE5-4D0C-B00B-EB0B5DF8CB9A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpottedCotuca.Application.Tests", "SpottedCotuca.Application.Tests\SpottedCotuca.Application.Tests.csproj", "{0D328F50-7A50-4E2C-A459-CB57F44AB194}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpottedCotuca.Application.Tests", "SpottedCotuca.Application.Tests\SpottedCotuca.Application.Tests.csproj", "{0D328F50-7A50-4E2C-A459-CB57F44AB194}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

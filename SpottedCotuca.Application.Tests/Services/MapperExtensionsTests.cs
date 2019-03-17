@@ -4,7 +4,6 @@ using SpottedCotuca.Application.Services.Utils;
 using SpottedCotuca.Application.Tests.TestUtils.Builders;
 using System;
 using System.Collections.Generic;
-using Xunit;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace SpottedCotuca.Application.Tests.Services
@@ -34,7 +33,6 @@ namespace SpottedCotuca.Application.Tests.Services
         }
 
         [TestMethod]
-        [Fact(DisplayName = "Should map Spot to SpotGetResponse")]
         public void ShouldMapSpotToSpotGetResponse()
         {
             var response = _spot.ToSpotGetResponse();
@@ -48,7 +46,6 @@ namespace SpottedCotuca.Application.Tests.Services
         }
 
         [TestMethod]
-        [Fact(DisplayName = "Should map PagingSpots to SpotsGetResponse")]
         public void ShouldMapPagingSpotsToSpotsGetResponse()
         {
             var response = _pagingSpots.ToSpotsGetResponse();
@@ -60,7 +57,6 @@ namespace SpottedCotuca.Application.Tests.Services
         }
 
         [TestMethod]
-        [Fact(DisplayName = "Should map Spot to SpotPostResponse")]
         public void ShouldMapSpotToSpotPostResponse()
         {
             var response = _spot.ToSpotPostResponse();
@@ -69,7 +65,6 @@ namespace SpottedCotuca.Application.Tests.Services
         }
 
         [TestMethod]
-        [Fact(DisplayName = "Should map Spot to SpotPutResponse")]
         public void ShouldMapSpotToSpotPutResponse()
         {
             var response = _spot.ToSpotPutResponse();
