@@ -5,11 +5,7 @@ using SpottedCotuca.Aplication.Repositories.Datastore;
 using SpottedCotuca.Application.Data.Repositories.Datastore;
 using SpottedCotuca.Application.Entities.Models;
 using SpottedCotuca.Application.Tests.TestUtils.Builders;
-using SpottedCotuca.Application.Utils;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using Xunit;
 
 namespace SpottedCotuca.Application.Tests.Respositories
 {
@@ -39,7 +35,6 @@ namespace SpottedCotuca.Application.Tests.Respositories
         }
 
         [TestMethod]
-        [Fact(DisplayName = "Should create the Spot")]
         public async void ShouldCreateTheSpot()
         {
             Spot responseSpot = await _repo.Create(_spot);
@@ -56,7 +51,6 @@ namespace SpottedCotuca.Application.Tests.Respositories
         }
 
         [TestMethod]
-        [Fact(DisplayName = "Should update the Spot")]
         public async void ShouldUpdateTheSpot()
         {
             _spot.Status = Status.Rejected;
@@ -73,7 +67,6 @@ namespace SpottedCotuca.Application.Tests.Respositories
         }
 
         [TestMethod]
-        [Fact(DisplayName = "Should delete the Spot")]
         public async void ShouldDeleteTheSpot()
         {
             await _repo.Delete(_spot.Id);
