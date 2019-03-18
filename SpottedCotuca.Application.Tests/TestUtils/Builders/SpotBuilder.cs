@@ -12,8 +12,6 @@ namespace SpottedCotuca.Application.Tests.TestUtils.Builders
         private long _facebookId = Generate.NewId();
         private long _twitterId = Generate.NewId();
 
-        public SpotBuilder() { }
-
         public Spot Build()
         {
             return new Spot

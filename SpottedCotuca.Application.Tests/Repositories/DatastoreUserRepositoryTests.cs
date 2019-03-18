@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SpottedCotuca.Aplication.Repositories.Datastore;
 using SpottedCotuca.Application.Data.Repositories.Datastore;
 using SpottedCotuca.Application.Entities.Models;
+using SpottedCotuca.Application.Tests.TestUtils.Builders;
 
 namespace SpottedCotuca.Application.Tests.Repositories
 {
@@ -15,6 +16,23 @@ namespace SpottedCotuca.Application.Tests.Repositories
         private static DatastoreUserRepository _repo;
         private static DatastoreProvider _provider;
 
+        static DatastoreUserRepositoryTests()
+        {
+            _provider = new TestDatastoreProvider();
+            _repo = new DatastoreUserRepository(_provider);
+
+            var users = _provider.Db.RunQuery(new Query("User"));
+            _provider.Db.Delete(users.Entities);
+
+            _user = new UserBuilder()
+                        .WithId(1234)
+                        .WithUsername("user.name")
+                        .WithPassword("nicepassword")
+                        .WithSalt("ABCDEFG")
+                        .WithRole("admin")
+                        .Build();
+        }
+
         [TestMethod]
         public void TestUserRepository()
         {
@@ -24,17 +42,6 @@ namespace SpottedCotuca.Application.Tests.Repositories
                 await ShouldCreateTheUser();
                 await ShouldDeleteTheUser();
             });
-        }
-
-        static DatastoreUserRepositoryTests()
-        {
-            _provider = new TestDatastoreProvider();
-            _repo = new DatastoreUserRepository(_provider);
-
-            var users = _provider.Db.RunQuery(new Query("User"));
-            _provider.Db.Delete(users.Entities);
-
-            _user = new User();
         }
 
         private static async Task ShouldCreateTheUser()

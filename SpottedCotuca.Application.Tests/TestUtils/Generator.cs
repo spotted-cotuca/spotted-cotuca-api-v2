@@ -17,12 +17,18 @@ namespace SpottedCotuca.Application.Tests.TestUtils
             return Convert.ToInt64(id);
         }
 
-        public static string NewMessage()
+        public static string NewString(int length)
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            var message =  new string(Enumerable.Repeat(chars, 278)
-                                        .Select(s => s[_random.Next(s.Length)]).ToArray());
+            var generatedString =  new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[_random.Next(s.Length)]).ToArray());
 
+            return generatedString;
+        }
+        
+        public static string NewMessage()
+        {
+            var message =  new string(NewString(278));
             return $"\"{message}\"";
         }
     }
