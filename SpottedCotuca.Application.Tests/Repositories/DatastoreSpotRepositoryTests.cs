@@ -5,52 +5,53 @@ using SpottedCotuca.Aplication.Repositories.Datastore;
 using SpottedCotuca.Application.Data.Repositories.Datastore;
 using SpottedCotuca.Application.Entities.Models;
 using SpottedCotuca.Application.Tests.TestUtils.Builders;
+using SpottedCotuca.Application.Utils;
 using System;
-using System.Threading.Tasks;
 
 namespace SpottedCotuca.Application.Tests.Repositories
 {
-    [TestClass]
-    public class DatastoreSpotRepositoryTests
+    [TestCategory("DatastoreSpotRepository")]
+    public abstract class DatastoreSpotRepositoryTests
     {
-        private static Spot _spot;
-        private static DatastoreSpotRepository _repo;
-        private static DatastoreProvider _provider;
+        protected static Spot _spot;
+        protected static DatastoreSpotRepository _repo;
+        protected static DatastoreProvider _provider;
 
-        static DatastoreSpotRepositoryTests()
+        public DatastoreSpotRepositoryTests()
         {
             _provider = new TestDatastoreProvider();
             _repo = new DatastoreSpotRepository(_provider);
+        }
 
-            var spots = _provider.Db.RunQuery(new Query("Spot"));
-            _provider.Db.Delete(spots.Entities);
-
+        [TestInitialize]
+        public void Initialize()
+        {
             _spot = new SpotBuilder()
-                            .WithId(1234567890123456)
-                            .WithMessage("\"Hey, isso é um Spot de teste!\"")
-                            .WithStatus(Status.Approved)
-                            .WithPostDate(DateTime.Now)
-                            .WithFacebookId(0171419300152494)
-                            .WithTwitterId(9699889487548702)
-                            .Build();
+                .WithMessage("\"Hey, isso é um Spot de teste!\"")
+                .WithStatus(Status.Approved)
+                .WithPostDate(DateTime.Now)
+                .WithFacebookId(0171419300152494)
+                .WithTwitterId(9699889487548702)
+                .Build();
         }
 
-        [TestMethod]
-        public void TestSpotRepository()
+        [TestCleanup()]
+        public void Cleanup()
         {
-            Task.Run(async () =>
-            {
-                await ShouldCreateTheSpot();
-                await ShouldUpdateTheSpot();
-                await ShouldDeleteTheSpot();
-            });
+            _provider.Db.Delete(_spot.Id.ToSpotKey());
         }
-        
-        private static async Task ShouldCreateTheSpot()
+    }
+
+    [TestClass]
+    public class DatastoreSpotRepositoryCreateTests : DatastoreSpotRepositoryTests
+    {
+        [TestMethod]
+        public void ShouldCreateTheSpot()
         {
-            var responseSpot = await _repo.Create(_spot);
-            var fetchedSpot = await _repo.Read(responseSpot.Id);
+            var responseSpot =  _repo.Create(_spot).Result;
             _spot.Id = responseSpot.Id;
+
+            var fetchedSpot = _provider.Db.Lookup(responseSpot.Id.ToSpotKey()).ToSpot();
 
             fetchedSpot.Id.Should().Be(responseSpot.Id);
             fetchedSpot.Message.Should().Be(_spot.Message);
@@ -60,12 +61,33 @@ namespace SpottedCotuca.Application.Tests.Repositories
             fetchedSpot.FacebookId.Should().Be(_spot.FacebookId);
             fetchedSpot.TwitterId.Should().Be(_spot.TwitterId);
         }
+    }
 
-        private static async Task ShouldUpdateTheSpot()
+    [TestClass]
+    public class DatastoreSpotRepositoryUpdateTests : DatastoreSpotRepositoryTests
+    {
+        [TestInitialize]
+        new public void Initialize()
+        {
+            base.Initialize();
+
+            using (DatastoreTransaction transaction = _provider.Db.BeginTransaction())
+            {
+                var entity = _spot.ToEntity();
+                entity.Key = _provider.Db.CreateKeyFactory("Spot").CreateIncompleteKey();
+                transaction.Insert(entity);
+
+                transaction.Commit();
+                _spot.Id = entity.Key.ToId();
+            }
+        }
+
+        [TestMethod]
+        public void ShouldUpdateTheSpot()
         {
             _spot.Status = Status.Rejected;
-            await _repo.Update(_spot);
-            var fetchedSpot = await _repo.Read(_spot.Id);
+            _ = _repo.Update(_spot);
+            var fetchedSpot = _repo.Read(_spot.Id).Result;
 
             fetchedSpot.Id.Should().Be(_spot.Id);
             fetchedSpot.Message.Should().Be(_spot.Message);
@@ -75,11 +97,33 @@ namespace SpottedCotuca.Application.Tests.Repositories
             fetchedSpot.FacebookId.Should().Be(_spot.FacebookId);
             fetchedSpot.TwitterId.Should().Be(_spot.TwitterId);
         }
+    }
 
-        private static async Task ShouldDeleteTheSpot()
+    [TestClass]
+    public class DatastoreSpotRepositoryDeleteTests : DatastoreSpotRepositoryTests
+    {
+        [TestInitialize]
+        new public void Initialize()
         {
-            await _repo.Delete(_spot.Id);
-            var fetchedSpot = await _repo.Read(_spot.Id);
+            base.Initialize();
+
+            using (DatastoreTransaction transaction = _provider.Db.BeginTransaction())
+            {
+                var entity = _spot.ToEntity();
+                entity.Key = _provider.Db.CreateKeyFactory("Spot").CreateIncompleteKey();
+                transaction.Insert(entity);
+
+                transaction.Commit();
+                _spot.Id = entity.Key.ToId();
+            }
+        }
+
+        [TestMethod]
+        public void ShouldDeleteTheSpot()
+        {
+            _ = _repo.Delete(_spot.Id);
+
+            var fetchedSpot = _provider.Db.Lookup(_spot.Id.ToSpotKey()).ToSpot();
 
             fetchedSpot.Should().Be(null);
         }

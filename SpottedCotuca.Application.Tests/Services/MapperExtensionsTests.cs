@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace SpottedCotuca.Application.Tests.Services
 {
     [TestClass]
+    [TestCategory("MapperExtensions")]
     public class MapperExtensionsTests
     {
         private Spot _spot;
