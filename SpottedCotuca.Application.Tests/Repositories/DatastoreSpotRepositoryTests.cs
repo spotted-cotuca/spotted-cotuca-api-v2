@@ -5,10 +5,7 @@ using SpottedCotuca.Aplication.Repositories.Datastore;
 using SpottedCotuca.Application.Data.Repositories.Datastore;
 using SpottedCotuca.Application.Entities.Models;
 using SpottedCotuca.Application.Tests.TestUtils.Builders;
-using SpottedCotuca.Application.Utils;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SpottedCotuca.Application.Tests.Repositories
