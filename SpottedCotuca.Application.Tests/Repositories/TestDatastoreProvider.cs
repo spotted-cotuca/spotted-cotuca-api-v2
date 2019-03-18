@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SpottedCotuca.Application.Tests.Respositories
+namespace SpottedCotuca.Application.Tests.Repositories
 {
     class TestDatastoreProvider : DatastoreProvider
     {

@@ -9,9 +9,9 @@ using SpottedCotuca.Application.Utils;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Xunit;
+using System.Threading.Tasks;
 
-namespace SpottedCotuca.Application.Tests.Respositories
+namespace SpottedCotuca.Application.Tests.Repositories
 {
     [TestClass]
     public class DatastoreSpotRepositoryTests
@@ -39,11 +39,20 @@ namespace SpottedCotuca.Application.Tests.Respositories
         }
 
         [TestMethod]
-        [Fact(DisplayName = "Should create the Spot")]
-        public async void ShouldCreateTheSpot()
+        public void TestSpotRepository()
         {
-            Spot responseSpot = await _repo.Create(_spot);
-            Spot fetchedSpot = await _repo.Read(responseSpot.Id);
+            Task.Run(async () =>
+            {
+                await ShouldCreateTheSpot();
+                await ShouldUpdateTheSpot();
+                await ShouldDeleteTheSpot();
+            });
+        }
+        
+        private static async Task ShouldCreateTheSpot()
+        {
+            var responseSpot = await _repo.Create(_spot);
+            var fetchedSpot = await _repo.Read(responseSpot.Id);
             _spot.Id = responseSpot.Id;
 
             fetchedSpot.Id.Should().Be(responseSpot.Id);
@@ -55,13 +64,11 @@ namespace SpottedCotuca.Application.Tests.Respositories
             fetchedSpot.TwitterId.Should().Be(_spot.TwitterId);
         }
 
-        [TestMethod]
-        [Fact(DisplayName = "Should update the Spot")]
-        public async void ShouldUpdateTheSpot()
+        private static async Task ShouldUpdateTheSpot()
         {
             _spot.Status = Status.Rejected;
             await _repo.Update(_spot);
-            Spot fetchedSpot = await _repo.Read(_spot.Id);
+            var fetchedSpot = await _repo.Read(_spot.Id);
 
             fetchedSpot.Id.Should().Be(_spot.Id);
             fetchedSpot.Message.Should().Be(_spot.Message);
@@ -72,12 +79,10 @@ namespace SpottedCotuca.Application.Tests.Respositories
             fetchedSpot.TwitterId.Should().Be(_spot.TwitterId);
         }
 
-        [TestMethod]
-        [Fact(DisplayName = "Should delete the Spot")]
-        public async void ShouldDeleteTheSpot()
+        private static async Task ShouldDeleteTheSpot()
         {
             await _repo.Delete(_spot.Id);
-            Spot fetchedSpot = await _repo.Read(_spot.Id);
+            var fetchedSpot = await _repo.Read(_spot.Id);
 
             fetchedSpot.Should().Be(null);
         }
