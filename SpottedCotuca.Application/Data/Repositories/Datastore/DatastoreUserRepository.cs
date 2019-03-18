@@ -7,7 +7,7 @@ using SpottedCotuca.Application.Utils;
 
 namespace SpottedCotuca.Aplication.Repositories.Datastore
 {
-    public class DatastoreUserRepository : IUserRepository
+    public class DatastoreUserRepository : UserRepository
     {
         private DatastoreDb _db;
         private DatastoreProvider _provider;
@@ -18,12 +18,19 @@ namespace SpottedCotuca.Aplication.Repositories.Datastore
             _db = _provider.Db;
         }
 
-        public async Task Create(User user)
+        public async Task<User> Create(User user)
         {
-            var entity = user.ToEntity();
-            entity.Key = _db.CreateKeyFactory("User").CreateIncompleteKey();
-            var keys = await _db.InsertAsync(new[] { entity });
-            user.Id = keys.First().Path.First().Id;
+            using (DatastoreTransaction transaction = await _db.BeginTransactionAsync())
+            {
+                var entity = user.ToEntity();
+                entity.Key = _db.CreateKeyFactory("User").CreateIncompleteKey();
+                transaction.Insert(entity);
+
+                await transaction.CommitAsync();
+                user.Id = entity.Key.ToId();
+            }
+
+            return user;
         }
 
         public async Task Delete(string username)
@@ -43,11 +50,16 @@ namespace SpottedCotuca.Aplication.Repositories.Datastore
             return results.Entities.First()?.ToUser();
         }
 
-        /*
-        public Task Update(User user)
+        public async Task<User> Update(User user)
         {
-            throw new NotImplementedException();
+            using (DatastoreTransaction transaction = await _db.BeginTransactionAsync())
+            {
+                var entity = user.ToEntity();
+                transaction.Update(entity);
+                await transaction.CommitAsync();
+            }
+
+            return user;
         }
-        */
     }
 }

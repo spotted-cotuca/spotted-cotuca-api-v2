@@ -15,11 +15,11 @@ namespace SpottedCotuca.Application.Services
 {
     public class SpotService : BaseService
     {
-        private readonly ISpotRepository _repository;
+        private readonly SpotRepository _repository;
         private readonly IFacebookClient _facebookClient;
         private readonly ITwitterClient _twitterClient;
 
-        public SpotService(ISpotRepository repository, IFacebookClient facebookClient, ITwitterClient twitterClient)
+        public SpotService(SpotRepository repository, IFacebookClient facebookClient, ITwitterClient twitterClient)
         {
             _repository = repository;
             _facebookClient = facebookClient;

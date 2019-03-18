@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace SpottedCotuca.Aplication.Repositories
 {
-    public interface ISpotRepository
+    public interface SpotRepository
     {
         Task<Spot> Read(long id);
         Task<PagingSpots> Read(Status status, int offset, int limit);

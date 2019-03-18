@@ -3,11 +3,11 @@ using SpottedCotuca.Application.Entities.Models;
 
 namespace SpottedCotuca.Aplication.Repositories
 {
-    interface IUserRepository
+    interface UserRepository
     {
         Task<User> Read(string username);
-        Task Create(User user);
-        //Task Update(User user);
+        Task<User> Create(User user);
+        Task<User> Update(User user);
         Task Delete(string username);
     }
 }

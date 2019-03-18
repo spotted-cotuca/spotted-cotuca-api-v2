@@ -7,7 +7,7 @@ using SpottedCotuca.Application.Utils;
 
 namespace SpottedCotuca.Aplication.Repositories.Datastore
 {
-    public class DatastoreSpotRepository : ISpotRepository
+    public class DatastoreSpotRepository : SpotRepository
     {
         private DatastoreDb _db;
         private DatastoreProvider _provider;
@@ -36,15 +36,13 @@ namespace SpottedCotuca.Aplication.Repositories.Datastore
 
         public async Task<Spot> Create(Spot spot)
         {
-            CommitResponse resp;
-
             using (DatastoreTransaction transaction = await _db.BeginTransactionAsync())
             {
                 var entity = spot.ToEntity();
                 entity.Key = _db.CreateKeyFactory("Spot").CreateIncompleteKey();
                 transaction.Insert(entity);
 
-                resp = await transaction.CommitAsync();
+                await transaction.CommitAsync();
                 spot.Id = entity.Key.ToId();
             }
 
