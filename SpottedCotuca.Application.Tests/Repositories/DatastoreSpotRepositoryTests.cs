@@ -95,7 +95,8 @@ namespace SpottedCotuca.Application.Tests.Repositories
         public void ShouldUpdateTheSpot()
         {
             _spot.Status = Status.Rejected;
-            _ = _repo.Update(_spot).Result;
+            _repo.Update(_spot).GetAwaiter().GetResult();
+
             var fetchedSpot = _provider.Db.Lookup(_spot.Id.ToSpotKey()).ToSpot();
 
             fetchedSpot.Id.Should().Be(_spot.Id);
@@ -114,7 +115,7 @@ namespace SpottedCotuca.Application.Tests.Repositories
         [TestMethod]
         public void ShouldDeleteTheSpot()
         {
-            _ = _repo.Delete(_spot.Id);
+            _repo.Delete(_spot.Id).GetAwaiter().GetResult();
 
             var fetchedSpot = _provider.Db.Lookup(_spot.Id.ToSpotKey()).ToSpot();
 
