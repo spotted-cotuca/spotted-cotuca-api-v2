@@ -13,7 +13,7 @@ namespace SpottedCotuca.Application.Tests.Repositories
     [TestCategory("DatastoreSpotRepository")]
     public abstract class DatastoreSpotRepositoryTests
     {
-        protected Spot _spot;
+        protected static Spot _spot;
         protected static DatastoreSpotRepository _repo;
         protected static DatastoreProvider _provider;
 
@@ -58,6 +58,26 @@ namespace SpottedCotuca.Application.Tests.Repositories
                 transaction.Commit();
                 _spot.Id = entity.Key.ToId();
             }
+        }
+    }
+
+    [TestClass]
+    public class DatastoreSpotRepositoryReadTests : DatastoreSpotRepositoryTests
+    {
+        [TestMethod]
+        public void ShouldReadTheSpot()
+        {
+            var responseSpot = _repo.Read(_spot.Id).Result;
+
+            var fetchedSpot = _provider.Db.Lookup(responseSpot.Id.ToSpotKey()).ToSpot();
+
+            responseSpot.Id.Should().Be(fetchedSpot.Id);
+            responseSpot.Message.Should().Be(fetchedSpot.Message);
+            responseSpot.Status.Should().Be(fetchedSpot.Status);
+            responseSpot.PostDate.ToString("dd/MM/yyyy HH:mm").Should()
+                .Be(fetchedSpot.PostDate.ToString("dd/MM/yyyy HH:mm"));
+            responseSpot.FacebookId.Should().Be(fetchedSpot.FacebookId);
+            responseSpot.TwitterId.Should().Be(fetchedSpot.TwitterId);
         }
     }
 
