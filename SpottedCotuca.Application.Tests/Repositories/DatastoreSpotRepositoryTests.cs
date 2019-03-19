@@ -13,7 +13,7 @@ namespace SpottedCotuca.Application.Tests.Repositories
     [TestCategory("DatastoreSpotRepository")]
     public abstract class DatastoreSpotRepositoryTests
     {
-        protected static Spot _spot;
+        protected Spot _spot;
         protected static DatastoreSpotRepository _repo;
         protected static DatastoreProvider _provider;
 
@@ -40,6 +40,19 @@ namespace SpottedCotuca.Application.Tests.Repositories
         {
             _provider.Db.Delete(_spot.Id.ToSpotKey());
         }
+
+        protected void InsertSpotOnDatastore()
+        {
+            using (DatastoreTransaction transaction = _provider.Db.BeginTransaction())
+            {
+                var entity = _spot.ToEntity();
+                entity.Key = _provider.Db.CreateKeyFactory("Spot").CreateIncompleteKey();
+                transaction.Insert(entity);
+
+                transaction.Commit();
+                _spot.Id = entity.Key.ToId();
+            }
+        }
     }
 
     [TestClass]
@@ -48,12 +61,12 @@ namespace SpottedCotuca.Application.Tests.Repositories
         [TestMethod]
         public void ShouldCreateTheSpot()
         {
-            var responseSpot =  _repo.Create(_spot).Result;
+            var responseSpot = _repo.Create(_spot).Result;
             _spot.Id = responseSpot.Id;
 
             var fetchedSpot = _provider.Db.Lookup(responseSpot.Id.ToSpotKey()).ToSpot();
 
-            fetchedSpot.Id.Should().Be(responseSpot.Id);
+            fetchedSpot.Id.Should().Be(_spot.Id);
             fetchedSpot.Message.Should().Be(_spot.Message);
             fetchedSpot.Status.Should().Be(_spot.Status);
             fetchedSpot.PostDate.ToString("dd/MM/yyyy HH:mm").Should()
@@ -70,24 +83,15 @@ namespace SpottedCotuca.Application.Tests.Repositories
         new public void Initialize()
         {
             base.Initialize();
-
-            using (DatastoreTransaction transaction = _provider.Db.BeginTransaction())
-            {
-                var entity = _spot.ToEntity();
-                entity.Key = _provider.Db.CreateKeyFactory("Spot").CreateIncompleteKey();
-                transaction.Insert(entity);
-
-                transaction.Commit();
-                _spot.Id = entity.Key.ToId();
-            }
+            InsertSpotOnDatastore();
         }
 
         [TestMethod]
         public void ShouldUpdateTheSpot()
         {
             _spot.Status = Status.Rejected;
-            _ = _repo.Update(_spot);
-            var fetchedSpot = _repo.Read(_spot.Id).Result;
+            _ = _repo.Update(_spot).Result;
+            var fetchedSpot = _provider.Db.Lookup(_spot.Id.ToSpotKey()).ToSpot();
 
             fetchedSpot.Id.Should().Be(_spot.Id);
             fetchedSpot.Message.Should().Be(_spot.Message);
@@ -106,16 +110,7 @@ namespace SpottedCotuca.Application.Tests.Repositories
         new public void Initialize()
         {
             base.Initialize();
-
-            using (DatastoreTransaction transaction = _provider.Db.BeginTransaction())
-            {
-                var entity = _spot.ToEntity();
-                entity.Key = _provider.Db.CreateKeyFactory("Spot").CreateIncompleteKey();
-                transaction.Insert(entity);
-
-                transaction.Commit();
-                _spot.Id = entity.Key.ToId();
-            }
+            InsertSpotOnDatastore();
         }
 
         [TestMethod]
