@@ -26,6 +26,18 @@ namespace SpottedCotuca.Application.Tests.Repositories
         [TestInitialize]
         public void Initialize()
         {
+            BuildSpot();
+            CreateSpotOnDatastore();
+        }
+
+        [TestCleanup()]
+        public void Cleanup()
+        {
+            _provider.Db.Delete(_spot.Id.ToSpotKey());
+        }
+
+        protected void BuildSpot()
+        {
             _spot = new SpotBuilder()
                 .WithMessage("\"Hey, isso é um Spot de teste!\"")
                 .WithStatus(Status.Approved)
@@ -35,13 +47,7 @@ namespace SpottedCotuca.Application.Tests.Repositories
                 .Build();
         }
 
-        [TestCleanup()]
-        public void Cleanup()
-        {
-            _provider.Db.Delete(_spot.Id.ToSpotKey());
-        }
-
-        protected void InsertSpotOnDatastore()
+        protected void CreateSpotOnDatastore()
         {
             using (DatastoreTransaction transaction = _provider.Db.BeginTransaction())
             {
@@ -58,6 +64,12 @@ namespace SpottedCotuca.Application.Tests.Repositories
     [TestClass]
     public class DatastoreSpotRepositoryCreateTests : DatastoreSpotRepositoryTests
     {
+        [TestInitialize]
+        new public void Initialize()
+        {
+            BuildSpot();
+        }
+
         [TestMethod]
         public void ShouldCreateTheSpot()
         {
@@ -79,13 +91,6 @@ namespace SpottedCotuca.Application.Tests.Repositories
     [TestClass]
     public class DatastoreSpotRepositoryUpdateTests : DatastoreSpotRepositoryTests
     {
-        [TestInitialize]
-        new public void Initialize()
-        {
-            base.Initialize();
-            InsertSpotOnDatastore();
-        }
-
         [TestMethod]
         public void ShouldUpdateTheSpot()
         {
@@ -106,13 +111,6 @@ namespace SpottedCotuca.Application.Tests.Repositories
     [TestClass]
     public class DatastoreSpotRepositoryDeleteTests : DatastoreSpotRepositoryTests
     {
-        [TestInitialize]
-        new public void Initialize()
-        {
-            base.Initialize();
-            InsertSpotOnDatastore();
-        }
-
         [TestMethod]
         public void ShouldDeleteTheSpot()
         {
