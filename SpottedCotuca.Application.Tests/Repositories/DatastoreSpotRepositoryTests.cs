@@ -71,13 +71,13 @@ namespace SpottedCotuca.Application.Tests.Repositories
 
             var fetchedSpot = _provider.Db.Lookup(responseSpot.Id.ToSpotKey()).ToSpot();
 
-            responseSpot.Id.Should().Be(fetchedSpot.Id);
-            responseSpot.Message.Should().Be(fetchedSpot.Message);
-            responseSpot.Status.Should().Be(fetchedSpot.Status);
-            responseSpot.PostDate.ToString("dd/MM/yyyy HH:mm").Should()
-                .Be(fetchedSpot.PostDate.ToString("dd/MM/yyyy HH:mm"));
-            responseSpot.FacebookId.Should().Be(fetchedSpot.FacebookId);
-            responseSpot.TwitterId.Should().Be(fetchedSpot.TwitterId);
+            fetchedSpot.Id.Should().Be(responseSpot.Id);
+            fetchedSpot.Message.Should().Be(responseSpot.Message);
+            fetchedSpot.Status.Should().Be(responseSpot.Status);
+            fetchedSpot.PostDate.ToString("dd/MM/yyyy HH:mm").Should()
+                .Be(responseSpot.PostDate.ToString("dd/MM/yyyy HH:mm"));
+            fetchedSpot.FacebookId.Should().Be(responseSpot.FacebookId);
+            fetchedSpot.TwitterId.Should().Be(responseSpot.TwitterId);
         }
     }
 
@@ -94,17 +94,23 @@ namespace SpottedCotuca.Application.Tests.Repositories
         public void ShouldCreateTheSpot()
         {
             var responseSpot = _repo.Create(_spot).Result;
-            _spot.Id = responseSpot.Id;
 
             var fetchedSpot = _provider.Db.Lookup(responseSpot.Id.ToSpotKey()).ToSpot();
 
-            fetchedSpot.Id.Should().Be(_spot.Id);
-            fetchedSpot.Message.Should().Be(_spot.Message);
-            fetchedSpot.Status.Should().Be(_spot.Status);
-            fetchedSpot.PostDate.ToString("dd/MM/yyyy HH:mm").Should()
+            responseSpot.Message.Should().Be(_spot.Message);
+            responseSpot.Status.Should().Be(_spot.Status);
+            responseSpot.PostDate.ToString("dd/MM/yyyy HH:mm").Should()
                 .Be(_spot.PostDate.ToString("dd/MM/yyyy HH:mm"));
-            fetchedSpot.FacebookId.Should().Be(_spot.FacebookId);
-            fetchedSpot.TwitterId.Should().Be(_spot.TwitterId);
+            responseSpot.FacebookId.Should().Be(_spot.FacebookId);
+            responseSpot.TwitterId.Should().Be(_spot.TwitterId);
+
+            fetchedSpot.Id.Should().Be(responseSpot.Id);
+            fetchedSpot.Message.Should().Be(responseSpot.Message);
+            fetchedSpot.Status.Should().Be(responseSpot.Status);
+            fetchedSpot.PostDate.ToString("dd/MM/yyyy HH:mm").Should()
+                .Be(responseSpot.PostDate.ToString("dd/MM/yyyy HH:mm"));
+            fetchedSpot.FacebookId.Should().Be(responseSpot.FacebookId);
+            fetchedSpot.TwitterId.Should().Be(responseSpot.TwitterId);
         }
     }
 
@@ -115,17 +121,25 @@ namespace SpottedCotuca.Application.Tests.Repositories
         public void ShouldUpdateTheSpot()
         {
             _spot.Status = Status.Rejected;
-            _repo.Update(_spot).GetAwaiter().GetResult();
+            var responseSpot = _repo.Update(_spot).Result;
 
             var fetchedSpot = _provider.Db.Lookup(_spot.Id.ToSpotKey()).ToSpot();
 
-            fetchedSpot.Id.Should().Be(_spot.Id);
-            fetchedSpot.Message.Should().Be(_spot.Message);
-            fetchedSpot.Status.Should().Be(_spot.Status);
-            fetchedSpot.PostDate.ToString("dd/MM/yyyy HH:mm").Should()
+            responseSpot.Id.Should().Be(_spot.Id);
+            responseSpot.Message.Should().Be(_spot.Message);
+            responseSpot.Status.Should().Be(_spot.Status);
+            responseSpot.PostDate.ToString("dd/MM/yyyy HH:mm").Should()
                 .Be(_spot.PostDate.ToString("dd/MM/yyyy HH:mm"));
-            fetchedSpot.FacebookId.Should().Be(_spot.FacebookId);
-            fetchedSpot.TwitterId.Should().Be(_spot.TwitterId);
+            responseSpot.FacebookId.Should().Be(_spot.FacebookId);
+            responseSpot.TwitterId.Should().Be(_spot.TwitterId);
+
+            fetchedSpot.Id.Should().Be(responseSpot.Id);
+            fetchedSpot.Message.Should().Be(responseSpot.Message);
+            fetchedSpot.Status.Should().Be(responseSpot.Status);
+            fetchedSpot.PostDate.ToString("dd/MM/yyyy HH:mm").Should()
+                .Be(responseSpot.PostDate.ToString("dd/MM/yyyy HH:mm"));
+            fetchedSpot.FacebookId.Should().Be(responseSpot.FacebookId);
+            fetchedSpot.TwitterId.Should().Be(responseSpot.TwitterId);
         }
     }
 
