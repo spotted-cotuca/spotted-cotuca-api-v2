@@ -29,7 +29,7 @@ namespace SpottedCotuca.Application.Data.Clients
             if (response.IsSuccessStatusCode)
                 return JsonConvert.DeserializeObject<FacebookResponse>(response.Content.ToString()).Id.ToFacebookPostId();
 
-            throw new Exception(response.Content.ToString());
+            throw new FacebookClientException(response.Content.ToString());
         }
 
         public async Task<bool> DeletePost(long id)
@@ -39,7 +39,7 @@ namespace SpottedCotuca.Application.Data.Clients
             if (response.IsSuccessStatusCode)
                 return JsonConvert.DeserializeObject<FacebookResponse>(response.Content.ToString()).Success;
 
-            throw new Exception(response.Content.ToString());
+            throw new FacebookClientException(response.Content.ToString());
         }
 
         private async Task<HttpResponseMessage> SendPostRequest(string url, Dictionary<string, string> data)
@@ -52,14 +52,7 @@ namespace SpottedCotuca.Application.Data.Clients
 
             using (var http = new HttpClient())
             {
-                var response = await http.PostAsync(fullUrl, formData);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    return response;
-                }
-
-                throw new Exception(response.Content.ToString());
+                return await http.PostAsync(fullUrl, formData);
             }
         }
 
@@ -69,14 +62,7 @@ namespace SpottedCotuca.Application.Data.Clients
 
             using (var http = new HttpClient())
             {
-                var response = await http.DeleteAsync(fullUrl);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    return response;
-                }
-
-                throw new Exception(response.Content.ToString());
+                return await http.DeleteAsync(fullUrl);
             }
         }
     }
