@@ -7,6 +7,8 @@ using SpottedCotuca.Application.Entities.Models;
 using SpottedCotuca.Application.Tests.TestUtils.Builders;
 using SpottedCotuca.Application.Utils;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SpottedCotuca.Application.Tests.Repositories
 {
@@ -78,6 +80,92 @@ namespace SpottedCotuca.Application.Tests.Repositories
                 .Be(responseSpot.PostDate.ToString("dd/MM/yyyy HH:mm"));
             fetchedSpot.FacebookId.Should().Be(responseSpot.FacebookId);
             fetchedSpot.TwitterId.Should().Be(responseSpot.TwitterId);
+        }
+    }
+
+    [TestClass]
+    public class DatastoreSpotsRepositoryReadTests : DatastoreSpotRepositoryTests
+    {
+        private static List<Spot> _spots;
+
+        [TestInitialize]
+        new public void Initialize()
+        {
+            BuildSpots();
+            CreateSpotsOnDatastore();
+        }
+
+        [TestMethod]
+        public void ShouldReadTheSpots()
+        {
+            var responseSpots = _repo.Read(Status.Approved, 0, 1).Result;
+
+            var query = new Query("Spot")
+            {
+                Filter = Filter.And(Filter.Equal("status", (int)Status.Approved)),
+                Order = { { "date", PropertyOrder.Types.Direction.Descending} },
+                Offset = 0,
+                Limit = 1
+            };
+
+            var fetchedSpots = _provider.Db.RunQuery(query).Entities.Select(entity => entity.ToSpot()).ToList();
+
+            responseSpots.Spots.Count.Should().Be(fetchedSpots.Count);
+
+            responseSpots.Spots.FirstOrDefault().Id.Should().Be(fetchedSpots.FirstOrDefault().Id);
+            responseSpots.Spots.FirstOrDefault().Message.Should().Be(fetchedSpots.FirstOrDefault().Message);
+            responseSpots.Spots.FirstOrDefault().Status.Should().Be(fetchedSpots.FirstOrDefault().Status);
+            responseSpots.Spots.FirstOrDefault().PostDate.ToString("dd/MM/yyyy HH:mm").Should()
+                .Be(fetchedSpots.FirstOrDefault().PostDate.ToString("dd/MM/yyyy HH:mm"));
+            responseSpots.Spots.FirstOrDefault().FacebookId.Should().Be(fetchedSpots.FirstOrDefault().FacebookId);
+            responseSpots.Spots.FirstOrDefault().TwitterId.Should().Be(fetchedSpots.FirstOrDefault().TwitterId);
+        }
+
+        [TestCleanup()]
+        new public void Cleanup()
+        {
+            foreach (Spot spot in _spots)
+            {
+                _provider.Db.Delete(_spot.Id.ToSpotKey());
+            }
+        }
+
+        private void BuildSpots()
+        {
+            _spots = new List<Spot>
+            {
+                new SpotBuilder()
+                    .WithMessage("\"Hey, isso é o primeiro Spot de teste!\"")
+                    .WithStatus(Status.Approved)
+                    .WithPostDate(DateTime.Now)
+                    .WithFacebookId(0171419300152495)
+                    .WithTwitterId(9699889487548703)
+                    .Build(),
+
+                new SpotBuilder()
+                    .WithMessage("\"Hey, isso é o segundo Spot de teste!\"")
+                    .WithStatus(Status.Approved)
+                    .WithPostDate(DateTime.Now)
+                    .WithFacebookId(0171419300152496)
+                    .WithTwitterId(9699889487548704)
+                    .Build()
+            };
+        }
+
+        private void CreateSpotsOnDatastore()
+        {
+            foreach (Spot spot in _spots)
+            {
+                using (DatastoreTransaction transaction = _provider.Db.BeginTransaction())
+                {
+                    var entity = spot.ToEntity();
+                    entity.Key = _provider.Db.CreateKeyFactory("Spot").CreateIncompleteKey();
+                    transaction.Insert(entity);
+
+                    transaction.Commit();
+                    spot.Id = entity.Key.ToId();
+                }
+            }
         }
     }
 
