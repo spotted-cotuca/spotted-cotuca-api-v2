@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Google.Cloud.Datastore.V1;
 using SpottedCotuca.Application.Data.Repositories.Datastore;
@@ -24,7 +25,7 @@ namespace SpottedCotuca.Aplication.Repositories.Datastore
             return result.ToSpot();
         }
 
-        public async Task<PagingSpots> Read(Status status, int offset, int limit)
+        public async Task<List<Spot>> Read(Status status, int offset, int limit)
         {
             var query = new Query("Spot")
             {
@@ -36,7 +37,7 @@ namespace SpottedCotuca.Aplication.Repositories.Datastore
 
             var results = await _db.RunQueryAsync(query);
 
-            return new PagingSpots(results.Entities.Select(entity => entity.ToSpot()).ToList(), offset, limit);
+            return results.Entities.Select(entity => entity.ToSpot()).ToList();
         }
 
         public async Task<Spot> Create(Spot spot)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SpottedCotuca.Aplication.Repositories;
@@ -51,15 +52,15 @@ namespace SpottedCotuca.Application.Services
                 return Error<SpotsGetResponse>(error.ToMetaError());
             }
 
-            PagingSpots pagingSpots;
+            List<Spot> spots;
 
-            try { pagingSpots = await _repository.Read(request.Status.ToStatusEnum(), request.Offset, request.Limit);  }
+            try { spots = await _repository.Read(request.Status.ToStatusEnum(), request.Offset, request.Limit);  }
             catch { return Error<SpotsGetResponse>(Errors.SpotsReadingFromDatabaseError); }
 
-            if (pagingSpots == null)
+            if (spots?.Count == 0)
                 return Error<SpotsGetResponse>(Errors.SpotsNotFoundError);
 
-            return Success(pagingSpots.ToSpotsGetResponse());
+            return Success(spots.ToSpotsGetResponse(request.Offset, request.Limit));
         }
 
         public async Task<Result<SpotPostResponse>> CreateSpot(SpotPostRequest request)

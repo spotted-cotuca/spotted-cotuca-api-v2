@@ -12,7 +12,9 @@ namespace SpottedCotuca.Application.Tests.Services
     public class MapperExtensionsTests
     {
         private Spot _spot;
-        private PagingSpots _pagingSpots;
+        private List<Spot> _spots;
+        private int _offset = 0;
+        private int _limit = 50;
 
         public MapperExtensionsTests()
         {
@@ -25,11 +27,7 @@ namespace SpottedCotuca.Application.Tests.Services
                             .WithTwitterId(9699889487548702)
                             .Build();
 
-            _pagingSpots = new PagingSpotsBuilder()
-                            .WithLimit(50)
-                            .WithOffset(1)
-                            .WithSpots(new List<Spot> { _spot, _spot })
-                            .Build();
+            _spots = new List<Spot> { _spot, _spot };
         }
 
         [TestMethod]
@@ -46,14 +44,14 @@ namespace SpottedCotuca.Application.Tests.Services
         }
 
         [TestMethod]
-        public void ShouldMapPagingSpotsToSpotsGetResponse()
+        public void ShouldMapSpotsOffsetAndLimitToSpotsGetResponse()
         {
-            var response = _pagingSpots.ToSpotsGetResponse();
+            var response = _spots.ToSpotsGetResponse(_offset, _limit);
 
-            response.Paging.Limit.Should().Be(_pagingSpots.Limit);
-            response.Paging.Offset.Should().Be(_pagingSpots.Offset);
-            response.Paging.Count.Should().Be(_pagingSpots.Spots.Count);
-            response.Spots.Count.Should().Be(_pagingSpots.Spots.Count);
+            response.Paging.Offset.Should().Be(_offset);
+            response.Paging.Limit.Should().Be(_limit);
+            response.Paging.Count.Should().Be(_spots.Count);
+            response.Spots.Count.Should().Be(_spots.Count);
         }
 
         [TestMethod]
