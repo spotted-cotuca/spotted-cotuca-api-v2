@@ -10,6 +10,7 @@ using SpottedCotuca.Application.Tests.TestUtils.Builders;
 namespace SpottedCotuca.Application.Tests.Repositories
 {
     [TestClass]
+    [TestCategory("DatastoreUserRepository")]
     public class DatastoreUserRepositoryTests
     {
         private static User _user;
