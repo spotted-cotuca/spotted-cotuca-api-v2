@@ -13,6 +13,9 @@ namespace SpottedCotuca.Application.Utils
 
         public static Key ToUserKey(this long id) =>
             new Key().WithElement("User", id);
+            
+        public static Key ToRoleKey(this long id) =>
+            new Key().WithElement("Role", id);
 
         public static long ToId(this Key key) => key.Path.First().Id;
     }
