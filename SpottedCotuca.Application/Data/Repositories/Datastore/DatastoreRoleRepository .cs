@@ -18,10 +18,15 @@ namespace SpottedCotuca.Aplication.Repositories.Datastore
             _db = _provider.Db;
         }
 
-        public async Task<Role> Read(long id)
+        public async Task<Role> Read(string name)
         {
-            var result = await _db.LookupAsync(id.ToSpotKey());
-            return result.ToRole();
+            var query = new Query("Role")
+            {
+                Filter = Filter.Equal("name", name)
+            };
+
+            var results = await _db.RunQueryAsync(query);
+            return results.Entities.First()?.ToRole();
         }
         
         public async Task<Role> Create(Role role)
@@ -53,9 +58,10 @@ namespace SpottedCotuca.Aplication.Repositories.Datastore
             return role;
         }
 
-        public async Task Delete(long id)
+        public async Task Delete(string name)
         {
-            await _db.DeleteAsync(id.ToRoleKey());
+            Role targetRole = await this.Read(name);
+            await _db.DeleteAsync(targetRole?.Id.ToUserKey());
         }
     }
 }

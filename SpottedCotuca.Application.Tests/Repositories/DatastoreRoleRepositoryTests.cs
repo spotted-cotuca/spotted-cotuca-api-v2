@@ -48,7 +48,7 @@ namespace SpottedCotuca.Application.Tests.Repositories
         private static async Task ShouldCreateTheRole()
         {
             var responseRole = await _repo.Create(_role);
-            var fetchedRole = await _repo.Read(responseRole.Id);
+            var fetchedRole = await _repo.Read(responseRole.Name);
             _role.Id = responseRole.Id;
 
             fetchedRole.Id.Should().Be(responseRole.Id);
@@ -61,7 +61,7 @@ namespace SpottedCotuca.Application.Tests.Repositories
             var removedPermission = _role.Permissions[0];
             _role.Permissions.RemoveAt(0);
             await _repo.Update(_role);
-            var fetchedRole = await _repo.Read(_role.Id);
+            var fetchedRole = await _repo.Read(_role.Name);
 
             fetchedRole.Id.Should().Be(_role.Id);
             fetchedRole.Name.Should().Be(_role.Name);
@@ -71,8 +71,8 @@ namespace SpottedCotuca.Application.Tests.Repositories
 
         private static async Task ShouldDeleteTheRole()
         {
-            await _repo.Delete(_role.Id);
-            var fetchedRole = await _repo.Read(_role.Id);
+            await _repo.Delete(_role.Name);
+            var fetchedRole = await _repo.Read(_role.Name);
 
             fetchedRole.Should().Be(null);
         }

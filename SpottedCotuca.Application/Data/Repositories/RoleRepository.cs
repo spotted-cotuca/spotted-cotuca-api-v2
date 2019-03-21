@@ -5,9 +5,9 @@ namespace SpottedCotuca.Aplication.Repositories
 {
     public interface RoleRepository
     {
-        Task<Role> Read(long id);
+        Task<Role> Read(string name);
         Task<Role> Create(Role role);
         Task<Role> Update(Role role);
-        Task Delete(long id);
+        Task Delete(string name);
     }
 }
