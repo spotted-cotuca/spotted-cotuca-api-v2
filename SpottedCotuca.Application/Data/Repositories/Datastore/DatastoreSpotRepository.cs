@@ -26,8 +26,13 @@ namespace SpottedCotuca.Aplication.Repositories.Datastore
 
         public async Task<PagingSpots> Read(Status status, int offset, int limit)
         {
-            var filter = new Filter();
-            var query = new Query("Spot") { Filter = filter, Offset = offset, Limit = limit };
+            var query = new Query("Spot")
+            {
+                Filter = Filter.And(Filter.Equal("status", (int)status)),
+                Order = { { "date", PropertyOrder.Types.Direction.Descending } },
+                Offset = offset,
+                Limit = limit
+            };
 
             var results = await _db.RunQueryAsync(query);
 
