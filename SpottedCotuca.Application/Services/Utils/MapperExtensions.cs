@@ -1,4 +1,4 @@
-﻿using SpottedCotuca.Application.Contracts.Responses;
+﻿using SpottedCotuca.Application.Contracts.Responses.Spot;
 using SpottedCotuca.Application.Entities.Models;
 
 namespace SpottedCotuca.Application.Services.Utils

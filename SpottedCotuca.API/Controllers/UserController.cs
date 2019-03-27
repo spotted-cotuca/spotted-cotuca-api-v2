@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using SpottedCotuca.Application.Services;
 using SpottedCotuca.Application.Contracts.Requests;
+using SpottedCotuca.Application.Contracts.Requests.User;
 using SpottedCotuca.Application.Entities.Models;
 
 namespace SpottedCotuca.API.Controllers

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using FluentValidation;
+using SpottedCotuca.Application.Services;
 
 namespace SpottedCotuca.Application.Contracts.Requests.User
 {
@@ -51,15 +52,15 @@ namespace SpottedCotuca.Application.Contracts.Requests.User
         {
             RuleFor(request => request.Username)
                 .NotEmpty()
-                .WithMessage("Username cannot be empty.")
+                .WithCustomError(Errors.UserUsernameIsEmpty)
                 .Length(4, 30)
-                .WithMessage("Username length has to be between 4 and 30 characters.");
+                .WithCustomError(Errors.UserUsernameLength);
 
             RuleFor(request => request.Password)
                 .NotEmpty()
-                .WithMessage("Password cannot be empty.")
+                .WithCustomError(Errors.UserPasswordIsEmpty)
                 .MinimumLength(8)
-                .WithMessage("Password length has to be at least 8 characters.");
+                .WithCustomError(Errors.UserPasswordIsLesserThan8);
         }
     }
 }
