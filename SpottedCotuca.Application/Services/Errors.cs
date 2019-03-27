@@ -3,7 +3,7 @@
 namespace SpottedCotuca.Application.Services
 {
     public static class Errors
-    {
+    {   
         public static readonly MetaError SpotIdIsInvalid = new MetaError(400, "Invalid Spot Id.");
         public static readonly MetaError SpotMessageIsEmpty = new MetaError(400, "Message cannot be empty.");
         public static readonly MetaError SpotMessageIsMoreThan280Characters = new MetaError(400, "Message cannot be more than 280 characters.");
@@ -27,5 +27,10 @@ namespace SpottedCotuca.Application.Services
         public static readonly MetaError UserUsernameLength = new MetaError(400, "Username length must be between 4 and 30 characters.");
         public static readonly MetaError UserPasswordIsEmpty = new MetaError(400, "Password cannot be empty.");
         public static readonly MetaError UserPasswordIsLesserThan8 = new MetaError(400, "Password must have at least 8 characters.");
+        
+        public static readonly MetaError RoleNameIsEmpty = new MetaError(400, "Role name cannot be empty.");
+        public static readonly MetaError RoleNameIsMoreThan30Characters = new MetaError(400, "Role Name must have at least 30 characters.");
+        public static readonly MetaError RolePermissionsIsEmpty = new MetaError(400, "Role permissions array must not be empty.");
+        public static readonly MetaError RolePermissionsArrayIsInvalid = new MetaError(400, "Role permissions array must have all permissions valid.");
     }
 }
