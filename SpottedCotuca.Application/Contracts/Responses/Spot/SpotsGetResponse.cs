@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SpottedCotuca.Application.Contracts.Responses
+namespace SpottedCotuca.Application.Contracts.Responses.Spot
 {
     public class SpotsGetResponse
     {

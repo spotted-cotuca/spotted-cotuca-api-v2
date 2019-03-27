@@ -1,6 +1,8 @@
 ﻿using FluentValidation.Results;
 using SpottedCotuca.Application.Contracts.Requests;
 using System.Threading.Tasks;
+using SpottedCotuca.Application.Contracts.Requests.Spot;
+using SpottedCotuca.Application.Contracts.Requests.User;
 
 namespace SpottedCotuca.Application.Contracts
 {

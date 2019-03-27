@@ -22,4 +22,9 @@
     <ProjectReference Include="..\SpottedCotuca.Common\SpottedCotuca.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Contracts\Requests\Spot" />
+    <Folder Include="Contracts\Requests\User" />
+  </ItemGroup>
+
 </Project>

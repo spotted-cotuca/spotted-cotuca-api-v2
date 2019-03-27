@@ -1,4 +1,4 @@
-﻿namespace SpottedCotuca.Application.Contracts.Responses
+﻿namespace SpottedCotuca.Application.Contracts.Responses.Spot
 {
     public class SpotPutResponse
     {
