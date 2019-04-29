@@ -1,11 +1,9 @@
-﻿using FluentValidation;
+﻿using System;
+using FluentValidation;
 using FluentValidation.Results;
 using SpottedCotuca.Application.Services.Definitions;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace SpottedCotuca.Application.Contracts
+namespace SpottedCotuca.Application.Contracts.Validator
 {
     public static class FluentValidatorExtension
     {
