@@ -1,4 +1,5 @@
 using FluentValidation;
+using SpottedCotuca.Application.Contracts.Validator;
 using SpottedCotuca.Application.Services;
 
 namespace SpottedCotuca.Application.Contracts.Requests.Spot

@@ -8,6 +8,6 @@ namespace SpottedCotuca.Application.Contracts.Responses.Role
     {
         public long Id { get; set; }
         public string Name { get; set; }
-        public List<Permission> Permissions { get; set; }
+        public List<string> Permissions { get; set; }
     }
 }

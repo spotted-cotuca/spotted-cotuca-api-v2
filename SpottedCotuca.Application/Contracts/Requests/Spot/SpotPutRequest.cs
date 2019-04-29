@@ -1,4 +1,5 @@
 using FluentValidation;
+using SpottedCotuca.Application.Contracts.Validator;
 using SpottedCotuca.Application.Entities.Models;
 using SpottedCotuca.Application.Services;
 

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using FluentValidation;
+using SpottedCotuca.Application.Contracts.Validator;
 using SpottedCotuca.Application.Services;
 
 namespace SpottedCotuca.Application.Contracts.Requests.User

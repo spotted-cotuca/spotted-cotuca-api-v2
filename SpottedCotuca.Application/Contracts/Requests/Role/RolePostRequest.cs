@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using FluentValidation;
 using SpottedCotuca.Application.Contracts.Requests.Spot;
+using SpottedCotuca.Application.Contracts.Validator;
 using SpottedCotuca.Application.Services;
 using SpottedCotuca.Common.Security;
 

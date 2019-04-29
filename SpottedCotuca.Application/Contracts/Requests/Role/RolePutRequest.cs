@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using FluentValidation;
+using SpottedCotuca.Application.Contracts.Validator;
 using SpottedCotuca.Application.Entities.Models;
 using SpottedCotuca.Application.Services;
 using SpottedCotuca.Common.Security;
