@@ -38,7 +38,7 @@ namespace SpottedCotuca.Application.Data.Clients
             if (response.IsSuccessStatusCode)
                 return JsonConvert.DeserializeObject<TwitterResponse>(response.Content.ToString()).Id;
 
-            throw new Exception(response.Content.ToString());
+            throw new TwitterClientException(response.Content.ToString());
         }
 
         public async Task<bool> DestroyTweet(long id)
@@ -56,7 +56,7 @@ namespace SpottedCotuca.Application.Data.Clients
             if (response.StatusCode == HttpStatusCode.NotFound)
                 return false;
 
-            throw new Exception(response.Content.ToString());
+            throw new TwitterClientException(response.Content.ToString());
         }
 
         private async Task<HttpResponseMessage> SendRequest(string url, Dictionary<string, string> data)
@@ -118,14 +118,7 @@ namespace SpottedCotuca.Application.Data.Clients
             {
                 http.DefaultRequestHeaders.Add("Authorization", oAuthHeader);
 
-                var response = await http.PostAsync(fullUrl, formData);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    return response;
-                }
-
-                throw new Exception(response.Content.ToString());
+                return await http.PostAsync(fullUrl, formData);
             }
         }
     }

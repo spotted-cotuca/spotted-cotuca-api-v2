@@ -1,5 +1,6 @@
 ﻿using SpottedCotuca.Application.Contracts.Responses.Spot;
 using SpottedCotuca.Application.Entities.Models;
+using System.Collections.Generic;
 
 namespace SpottedCotuca.Application.Services.Utils
 {
@@ -18,20 +19,20 @@ namespace SpottedCotuca.Application.Services.Utils
             };
         }
 
-        public static SpotsGetResponse ToSpotsGetResponse(this PagingSpots pagingSpots)
+        public static SpotsGetResponse ToSpotsGetResponse(this List<Spot> spots, int offset, int limit)
         {
-            var spots = pagingSpots.Spots.ConvertAll(spot => spot.ToSpotGetResponse());
+            var spotResponses = spots.ConvertAll(spot => spot.ToSpotGetResponse());
 
             var pagingResponse = new PagingResponse
             {
-                Limit = pagingSpots.Limit,
-                Offset = pagingSpots.Offset,
-                Count = pagingSpots.Count
+                Offset = offset,
+                Limit = limit,
+                Count = spots.Count
             };
 
             return new SpotsGetResponse
             {
-                Spots = spots,
+                Spots = spotResponses,
                 Paging = pagingResponse
             };
         }
