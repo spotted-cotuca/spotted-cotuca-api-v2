@@ -32,5 +32,9 @@ namespace SpottedCotuca.Application.Services
         public static readonly MetaError RoleNameIsMoreThan30Characters = new MetaError(400, "Role Name must have at least 30 characters.");
         public static readonly MetaError RolePermissionsIsEmpty = new MetaError(400, "Role permissions array must not be empty.");
         public static readonly MetaError RolePermissionsArrayIsInvalid = new MetaError(400, "Role permissions array must have all permissions valid.");
+        public static readonly MetaError RoleReadingFromDatabaseError = new MetaError(500, "Error reading Role from database.");
+        public static readonly MetaError RoleCreatingOnDatabaseError = new MetaError(500, "Error creating Role on database.");
+        public static readonly MetaError RoleUpdatingOnDatabaseError = new MetaError(500, "Error updating Role on database.");
+        public static readonly MetaError RoleNotFoundError = new MetaError(404, "Role not found.");
     }
 }

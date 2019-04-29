@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using SpottedCotuca.Common.Security;
 
 namespace SpottedCotuca.Application.Entities.Models

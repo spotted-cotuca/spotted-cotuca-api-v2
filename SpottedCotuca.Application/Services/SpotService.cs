@@ -2,10 +2,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 using SpottedCotuca.Aplication.Repositories;
-using SpottedCotuca.Application.Contracts;
-using SpottedCotuca.Application.Contracts.Requests;
 using SpottedCotuca.Application.Contracts.Requests.Spot;
 using SpottedCotuca.Application.Contracts.Responses.Spot;
+using SpottedCotuca.Application.Contracts.Validator;
 using SpottedCotuca.Application.Data.Clients;
 using SpottedCotuca.Application.Entities.Models;
 using SpottedCotuca.Application.Services.Definitions;
